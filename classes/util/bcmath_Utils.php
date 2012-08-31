@@ -189,7 +189,7 @@ class bcmath_Utils {
     }
 
     public static function dec2base($dec, $base, $digits=FALSE) {
-        if (extension_loaded('bcmath') && USE_EXT=='BCMATH') {
+        if (extension_loaded('bcmath')) {
             if ($base < 2 or $base > 256)
                 die("Invalid Base: " . $base);
             bcscale(0);
@@ -209,7 +209,7 @@ class bcmath_Utils {
     }
 
     public static function base2dec($value, $base, $digits=FALSE) {
-        if (extension_loaded('bcmath') && USE_EXT=='BCMATH') {
+        if (extension_loaded('bcmath')) {
             if ($base < 2 or $base > 256)
                 die("Invalid Base: " . $base);
             bcscale(0);
