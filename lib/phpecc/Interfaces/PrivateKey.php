@@ -15,17 +15,25 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc\Interfaces;
 
 /**
- * This is the contract for describing a signature used in ECDSA.
+ * This is a contract for the PrivaetKey portion of ECDSA.
  *
  * @author Matej Danter
  */
-interface SignatureInterface {
-    public function __construct($r, $s);
+interface PrivateKey {
 
-    public function getR();
+    public function __construct(\phpecc\PublicKey $public_key, $secret_multiplier);
 
-    public function getS();
+    public function sign($hash, $random_k);
+
+    public static function int_to_string($x);
+
+    public static function string_to_int($s);
+
+    public static function digest_integer($m);
+
+    public static function point_is_valid(\phpecc\Point $generator, $x, $y);
 }
 ?>

@@ -1,0 +1,21 @@
+{
+    "name": "xqus/phpecc",
+    "description" : "",
+    "keywords" : [ "PHP", "Eliptic Curve" ],
+    "homepage" : "https://github.com/xqus/danter-php-ecc",
+    "license" : "GNU LGPL",
+    "require" : {
+        "php" : ">=5.3.1"
+    },
+    "authors" : [
+        {
+            "name" : "Matyas Danter",
+            "role" : "Developer"
+        }
+    ],
+    "autoload" : {
+        "psr-0" : {
+            "phpecc" : "lib/"
+        }
+    }
+}

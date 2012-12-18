@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /*
  * This file sets up class-loading and the environment
@@ -22,26 +23,7 @@ This program is free software: you can redistribute it and/or modify
  * if the GMP php extension exists it is preffered
  * because it is at least an order of magnitude faster
  */
-function __autoload($f) {
-    //load the interfaces first otherwise contract errors occur
-    $interfaceFile = "classes/interface/" . $f . "Interface.php";
-
-    if (file_exists($interfaceFile)) {
-        require_once $interfaceFile;
-    }
-
-    //load class files after interfaces
-    $classFile = "classes/" . $f . ".php";
-    if (file_exists($classFile)) {
-        require_once $classFile;
-    }
-
-    //if utilities are needed load them last
-    $utilFile = "classes/util/" . $f . ".php";
-    if (file_exists($utilFile)) {
-        require_once $utilFile;
-    }
-}
+require 'vendor/autoload.php';
 
 $seconds = 7200;
 set_time_limit($seconds);

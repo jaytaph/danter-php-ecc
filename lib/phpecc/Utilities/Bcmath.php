@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
-
+namespace phpecc\Utilities;
 /**
  * The bcmath extension in PHP does not implement certain operations
  * for elliptic curve encryption
@@ -25,7 +25,7 @@ This program is free software: you can redistribute it and/or modify
 if (!defined('MAX_BASE'))
     define('MAX_BASE', 128);
 
-class bcmath_Utils {
+class Bcmath {
 
     public static function bcrand($min, $max=false) {
         if (extension_loaded('bcmath') && USE_EXT=='BCMATH') {
@@ -80,7 +80,7 @@ class bcmath_Utils {
 
     public static function bcand($x, $y) {
         if (extension_loaded('bcmath') && USE_EXT=='BCMATH') {
-            return self::_bcbitwise_internal($x, $y, 'bcmath_Utils::_bcand');
+            return self::_bcbitwise_internal($x, $y, 'self::_bcand');
         } else {
             throw new ErrorException("Please install BCMATH");
         }

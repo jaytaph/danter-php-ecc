@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /**
  * Implementation of some number theoretic algorithms
@@ -58,7 +59,7 @@ class NumberTheory {
                     if (end($poly) != 0) {
                         for ($i = 2; $i < count($polymod) + 1; $i++) {
 
-                            $poly[count($poly) - $i] = gmp_strval(gmp_Utils::gmp_mod2(gmp_sub($poly[count($poly) - $i], gmp_mul(end($poly), $polymod[count($polymod) - $i])), $p));
+                            $poly[count($poly) - $i] = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_sub($poly[count($poly) - $i], gmp_mul(end($poly), $polymod[count($polymod) - $i])), $p));
                         }
                     }
                     $poly = array_slice($poly, 0, count($poly) - 1);
@@ -98,7 +99,7 @@ class NumberTheory {
                     if (!isset($prod[$index]))
                         $prod[$index] = 0;
 
-                    $prod[$index] = gmp_strval(gmp_Utils::gmp_mod2((gmp_add($prod[$index], gmp_mul($m1[$i], $m2[$j]))), $p));
+                    $prod[$index] = gmp_strval(Utilities\Gmp::gmp_mod2((gmp_add($prod[$index], gmp_mul($m1[$i], $m2[$j]))), $p));
                 }
             }
 
@@ -132,7 +133,7 @@ class NumberTheory {
                 $G = $base;
                 $k = $exponent;
 
-                if (gmp_cmp(gmp_Utils::gmp_mod2($k, 2), 1) == 0)
+                if (gmp_cmp(Utilities\Gmp::gmp_mod2($k, 2), 1) == 0)
                     $s = $G;
                 else
                     $s = array(1);
@@ -141,7 +142,7 @@ class NumberTheory {
                     $k = gmp_div($k, 2);
                     $G = self::polynomial_multiply_mod($G, $G, $polymod, $p);
 
-                    if (gmp_Utils::gmp_mod2($k, 2) == 1) {
+                    if (Utilities\Gmp::gmp_mod2($k, 2) == 1) {
                         $s = self::polynomial_multiply_mod($G, $s, $polymod, $p);
                     }
                 }
@@ -233,15 +234,15 @@ class NumberTheory {
                 if ($jac == -1)
                     throw new SquareRootException($a . " has no square root modulo " . $p);
 
-                if (gmp_strval(gmp_Utils::gmp_mod2($p, 4)) == 3)
+                if (gmp_strval(Utilities\Gmp::gmp_mod2($p, 4)) == 3)
                     return self::modular_exp($a, gmp_strval(gmp_div(gmp_add($p, 1), 4)), $p);
 
-                if (gmp_strval(gmp_Utils::gmp_mod2($p, 8)) == 5) {
+                if (gmp_strval(Utilities\Gmp::gmp_mod2($p, 8)) == 5) {
                     $d = self::modular_exp($a, gmp_strval(gmp_div(gmp_sub($p, 1), 4)), $p);
                     if ($d == 1)
                         return self::modular_exp($a, gmp_strval(gmp_div(gmp_add($p, 3), 8)), $p);
                     if ($d == $p - 1)
-                        return gmp_strval(gmp_Utils::gmp_mod2(gmp_mul(gmp_mul(2, $a), self::modular_exp(gmp_mul(4, $a), gmp_div(gmp_sub($p, 5), 8), $p)), $p));
+                        return gmp_strval(Utilities\Gmp::gmp_mod2(gmp_mul(gmp_mul(2, $a), self::modular_exp(gmp_mul(4, $a), gmp_div(gmp_sub($p, 5), 8), $p)), $p));
                     //shouldn't get here
                 }
 
@@ -354,7 +355,7 @@ class NumberTheory {
         if (extension_loaded('gmp') && USE_EXT=='GMP') {
             while ($a) {
                 $temp = $a;
-                $a = gmp_Utils::gmp_mod2($b, $a);
+                $a = Utilities\Gmp::gmp_mod2($b, $a);
                 $b = $temp;
             }
 
@@ -654,7 +655,7 @@ class NumberTheory {
                 $result = 1;
 
                 while ($z != 1) {
-                    $z = gmp_strval(gmp_Utils::gmp_mod2(gmp_mul($z, $x), $m));
+                    $z = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_mul($z, $x), $m));
                     $result = gmp_add($result, 1);
                 }
 
@@ -749,7 +750,7 @@ class NumberTheory {
 
             for ($i = 0; $i < $t; $i++) {
 
-                $a = bcmath_Utils::bcrand(1, bcsub($n, 1));
+                $a = Utilities\Bcmath::bcrand(1, bcsub($n, 1));
 
                 $b0 = self::modular_exp($a, $m, $n);
 
@@ -793,7 +794,7 @@ class NumberTheory {
                 return 2;
 
 
-            $result = bcmath_Utils::bcor(bcadd($starting_value, 1), 1);
+            $result = Utilities\Bcmath::bcor(bcadd($starting_value, 1), 1);
             while (!self::is_prime($result)) {
                 $result = bcadd($result, 2);
             }

@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
-
+namespace phpecc;
 
 /*
  * This class is where the elliptic curve arithmetic takes place.
@@ -28,7 +28,7 @@ This program is free software: you can redistribute it and/or modify
  * The rest of the methods are there for supporting the ones above.
  */
 
-class Point implements PointInterface {
+class Point implements Interfaces\Point {
 
         public $curve;
         public $x;
@@ -46,7 +46,7 @@ class Point implements PointInterface {
             if (isset($this->curve) && ($this->curve instanceof CurveFp)) {
                 if (!$this->curve->contains($this->x, $this->y)) {
                     throw new ErrorException("Curve" . print_r($this->curve, true) . " does not contain point ( " . $x . " , " . $y . " )");
-                    
+
                 }
 
                 if ($this->order != null) {
@@ -121,8 +121,8 @@ class Point implements PointInterface {
 
 
                 if (CurveFp::cmp($p1->curve, $p2->curve) == 0) {
-                    if (gmp_Utils::gmp_mod2(gmp_cmp($p1->x, $p2->x), $p1->curve->getPrime()) == 0) {
-                        if (gmp_Utils::gmp_mod2(gmp_add($p1->y, $p2->y), $p1->curve->getPrime()) == 0) {
+                    if (Utilities\Gmp::gmp_mod2(gmp_cmp($p1->x, $p2->x), $p1->curve->getPrime()) == 0) {
+                        if (Utilities\Gmp::gmp_mod2(gmp_add($p1->y, $p2->y), $p1->curve->getPrime()) == 0) {
                             return self::$infinity;
                         } else {
                             return self::double($p1);
@@ -134,10 +134,10 @@ class Point implements PointInterface {
                     $l = gmp_strval(gmp_mul(gmp_sub($p2->y, $p1->y), NumberTheory::inverse_mod(gmp_sub($p2->x, $p1->x), $p)));
 
 
-                    $x3 = gmp_strval(gmp_Utils::gmp_mod2(gmp_sub(gmp_sub(gmp_pow($l, 2), $p1->x), $p2->x), $p));
+                    $x3 = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_sub(gmp_sub(gmp_pow($l, 2), $p1->x), $p2->x), $p));
 
 
-                    $y3 = gmp_strval(gmp_Utils::gmp_mod2(gmp_sub(gmp_mul($l, gmp_sub($p1->x, $x3)), $p1->y), $p));
+                    $y3 = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_sub(gmp_mul($l, gmp_sub($p1->x, $x3)), $p1->y), $p));
 
 
                     $p3 = new Point($p1->curve, $x3, $y3);
@@ -193,7 +193,7 @@ class Point implements PointInterface {
                     return self::$infinity;
                 }
                 if ($p1->order != null) {
-                    $e = gmp_strval(gmp_Utils::gmp_mod2($e, $p1->order));
+                    $e = gmp_strval(Utilities\Gmp::gmp_mod2($e, $p1->order));
                 }
                 if (gmp_cmp($e, 0) == 0) {
 
@@ -255,10 +255,10 @@ class Point implements PointInterface {
                     while (bccomp($i, 1) == 1) {
                         $result = self::double($result);
 
-                        if (bccomp(bcmath_Utils::bcand($e3, $i), '0') != 0 && bccomp(bcmath_Utils::bcand($e, $i), '0') == 0) {
+                        if (bccomp(Utilities\Bcmath::bcand($e3, $i), '0') != 0 && bccomp(Utilities\Bcmath::bcand($e, $i), '0') == 0) {
                             $result = self::add($result, $p1);
                         }
-                        if (bccomp(bcmath_Utils::bcand($e3, $i), 0) == 0 && bccomp(bcmath_Utils::bcand($e, $i), 0) != 0) {
+                        if (bccomp(Utilities\Bcmath::bcand($e3, $i), 0) == 0 && bccomp(Utilities\Bcmath::bcand($e, $i), 0) != 0) {
                             $result = self::add($result, $negative_self);
                         }
 
@@ -315,11 +315,11 @@ class Point implements PointInterface {
 
                 $three_x2 = gmp_mul(3, gmp_pow($p1->x, 2));
 
-                $l = gmp_strval(gmp_Utils::gmp_mod2(gmp_mul(gmp_add($three_x2, $a), $inverse), $p));
+                $l = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_mul(gmp_add($three_x2, $a), $inverse), $p));
 
-                $x3 = gmp_strval(gmp_Utils::gmp_mod2(gmp_sub(gmp_pow($l, 2), gmp_mul(2, $p1->x)), $p));
+                $x3 = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_sub(gmp_pow($l, 2), gmp_mul(2, $p1->x)), $p));
 
-                $y3 = gmp_strval(gmp_Utils::gmp_mod2(gmp_sub(gmp_mul($l, gmp_sub($p1->x, $x3)), $p1->y), $p));
+                $y3 = gmp_strval(Utilities\Gmp::gmp_mod2(gmp_sub(gmp_mul($l, gmp_sub($p1->x, $x3)), $p1->y), $p));
 
                 if (gmp_cmp(0, $y3) > 0)
                     $y3 = gmp_strval(gmp_add($p, $y3));

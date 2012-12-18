@@ -15,11 +15,12 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /**
  * This class serves as public- private key exchange for signature verification
  */
-class PublicKey implements PublicKeyInterface {
+class PublicKey implements Interfaces\PublicKey {
 
     protected $curve;
     protected $generator;
@@ -67,10 +68,10 @@ class PublicKey implements PublicKeyInterface {
                 return false;
             }
             $c = NumberTheory::inverse_mod($s, $n);
-            $u1 = gmp_Utils::gmp_mod2(gmp_mul($hash, $c), $n);
-            $u2 = gmp_Utils::gmp_mod2(gmp_mul($r, $c), $n);
+            $u1 = Utilities\Gmp::gmp_mod2(gmp_mul($hash, $c), $n);
+            $u2 = Utilities\Gmp::gmp_mod2(gmp_mul($r, $c), $n);
             $xy = Point::add(Point::mul($u1, $G), Point::mul($u2, $point));
-            $v = gmp_Utils::gmp_mod2($xy->getX(), $n);
+            $v = Utilities\Gmp::gmp_mod2($xy->getX(), $n);
 
             if (gmp_cmp($v, $r) == 0)
                 return true;

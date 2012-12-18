@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc\Utilities;
 
 /**
  * The gmp extension in PHP does not implement certain necessary operations
@@ -22,7 +23,7 @@ This program is free software: you can redistribute it and/or modify
  * This class implements all neccessary static methods
  *
  */
-class gmp_Utils {
+class Gmp {
 
     public static function gmp_mod2($n, $d) {
         if (extension_loaded('gmp') && USE_EXT=='GMP') {

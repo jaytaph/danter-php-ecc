@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /**
  * This class is a representation of an EC over a field modulo a prime number
@@ -23,7 +24,7 @@ This program is free software: you can redistribute it and/or modify
  *  - Does the curve contain a point?
  *  - Comparison of two curves.
  */
-class CurveFp implements CurveFpInterface {
+class CurveFp implements Interfaces\CurveFp {
 
     //Elliptic curve over the field of integers modulo a prime
     protected $a = 0;
@@ -42,7 +43,7 @@ class CurveFp implements CurveFpInterface {
 
         if (extension_loaded('gmp') && USE_EXT=='GMP') {
 
-            $eq_zero = gmp_cmp(gmp_Utils::gmp_mod2(gmp_sub(gmp_pow($y, 2), gmp_add(gmp_add(gmp_pow($x, 3), gmp_mul($this->a, $x)), $this->b)), $this->prime), 0);
+            $eq_zero = gmp_cmp(Utilities\Gmp::gmp_mod2(gmp_sub(gmp_pow($y, 2), gmp_add(gmp_add(gmp_pow($x, 3), gmp_mul($this->a, $x)), $this->b)), $this->prime), 0);
 
 
             if ($eq_zero == 0) {

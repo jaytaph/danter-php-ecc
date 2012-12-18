@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /**
  * This class is the implementation of ECDH.
@@ -26,7 +27,7 @@ This program is free software: you can redistribute it and/or modify
  *
  * @author Matej Danter
  */
-class EcDH implements EcDHInterface {
+class EcDH implements Interfaces\EcDH {
 
     private $generator;
     private $pubPoint;
@@ -48,7 +49,7 @@ class EcDH implements EcDHInterface {
             //alice selects a random number between 1 and the order of the generator point(private)
             $n = $this->generator->getOrder();
 
-            $this->secret = gmp_Utils::gmp_random($n);
+            $this->secret = Utilities\Gmp::gmp_random($n);
 
             //Alice computes da * generator Qa is public, da is private
             $this->pubPoint = Point::mul($this->secret, $this->generator);
@@ -58,7 +59,7 @@ class EcDH implements EcDHInterface {
             //alice selects a random number between 1 and the order of the generator point(private)
             $n = $this->generator->getOrder();
 
-            $this->secret = bcmath_Utils::bcrand($n);
+            $this->secret = Utilities\Bcmath::bcrand($n);
 
             //Alice computes da * generator Qa is public, da is private
             $this->pubPoint = Point::mul($this->secret, $this->generator);
@@ -84,7 +85,7 @@ class EcDH implements EcDHInterface {
     public function decrypt($string) {
         $key = hash("sha256", $this->agreed_key, true);
 
-        $clearText = base64_decode(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC, $key));
+        $clearText = base64_decode(mcrypt_decrypt(\MCRYPT_RIJNDAEL_256, $key, $string, MCRYPT_MODE_CBC, $key));
         return $clearText;
     }
 

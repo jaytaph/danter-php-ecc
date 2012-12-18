@@ -15,25 +15,18 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc\Interfaces;
 
 /**
- * This is the contract for implementing CurveFp (EC prime finite-field).
+ * This is the contract for describing a signature used in ECDSA.
  *
  * @author Matej Danter
  */
-interface CurveFpInterface {
-        //constructor that sets up the instance variables
-        public function  __construct($prime, $a, $b);
+interface Signature {
+    public function __construct($r, $s);
 
-        public function contains($x,$y);
+    public function getR();
 
-        public function getA();
-
-        public function getB();
-
-        public function getPrime();
-
-        public static function cmp(CurveFp $cp1, CurveFp $cp2);
-
+    public function getS();
 }
 ?>

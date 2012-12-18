@@ -15,24 +15,24 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc\Interfaces;
 
 /**
- * This is a contract for the PrivaetKey portion of ECDSA.
+ * This is the contract for the PublicKey portion of ECDSA.
  *
  * @author Matej Danter
  */
-interface PrivateKeyInterface {
-    
-    public function __construct(PublicKey $public_key, $secret_multiplier);
+interface PublicKey {
 
-    public function sign($hash, $random_k);
+    public function __construct(\phpecc\Point $generator, \phpecc\Point $point);
 
-    public static function int_to_string($x);
+    public function verifies($hash, \phpecc\Signature $signature);
 
-    public static function string_to_int($s);
+    public function getCurve();
 
-    public static function digest_integer($m);
+    public function getGenerator();
 
-    public static function point_is_valid(Point $generator, $x, $y);
+    public function getPoint();
+
 }
 ?>

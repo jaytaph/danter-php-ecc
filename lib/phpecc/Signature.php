@@ -15,29 +15,33 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc;
 
 /**
- * This is the contract for implementing EcDH (EC Diffie Hellman).
+ * Plain Old PHP Object that stores the signature r,s for ECDSA
  *
  * @author Matej Danter
  */
-interface EcDHInterface {
-    
-    public function __construct(Point $g);
 
-    public function calculateKey();
+class Signature implements Interfaces\Signature {
 
-    public function getPublicPoint();
+    protected $r;
+    protected $s;
 
-    public function setPublicPoint(Point $q);
+    public function  __construct($r, $s) {
+        $this->r = $r;
+        $this->s = $s;
 
-    public function encrypt($string);
 
-    public function decrypt($string);
+    }
 
-    public function encryptFile($path);
 
-    public function decryptFile($path);
+    public function getR(){
+        return $this->r;
+    }
 
+    public function getS(){
+        return $this->s;
+    }
 }
 ?>

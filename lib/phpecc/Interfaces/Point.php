@@ -15,6 +15,7 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *************************************************************************/
+namespace phpecc\Interfaces;
 
 /**
  * This is the contract for implementing Point, which encapsulates entities
@@ -22,22 +23,22 @@ This program is free software: you can redistribute it and/or modify
  *
  * @author Matej Danter
  */
-interface PointInterface {
-    public function __construct(CurveFp $curve, $x, $y, $order = null);
+interface Point {
+    public function __construct(\phpecc\CurveFp $curve, $x, $y, $order = null);
 
     public static function cmp($p1, $p2);
 
     public static function add($p1, $p2);
 
-    public static function mul($x2, Point $p1);
+    public static function mul($x2, \phpecc\Point $p1);
 
     public static function leftmost_bit($x);
 
-    public static function rmul(Point $p1, $m);
+    public static function rmul(\phpecc\Point $p1, $m);
 
     public function __toString();
 
-    public static function double(Point $p1);
+    public static function double(\phpecc\Point $p1);
 
     public function getX();
 
