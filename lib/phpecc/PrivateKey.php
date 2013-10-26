@@ -31,6 +31,16 @@ class PrivateKey implements Interfaces\PrivateKey {
         $this->secret_multiplier = $secret_multiplier;
     }
 
+
+    public function getSecretMultiplier() {
+        return $this->secret_multiplier;
+    }
+
+    public function setSecretMultiplier($secret_multiplier)
+    {
+        $this->secret_multiplier = $secret_multiplier;
+    }
+
     public function sign($hash, $random_k) {
         if (extension_loaded('gmp') && USE_EXT=='GMP') {
             $G = $this->public_key->getGenerator();

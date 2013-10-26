@@ -40,9 +40,13 @@ class EcDH implements Interfaces\EcDH {
     }
 
     public function calculateKey() {
-
         $this->agreed_key = Point::mul($this->secret, $this->receivedPubPoint)->getX();
     }
+
+    public function getDerivedSharedSecret($secret) {
+        return Point::mul($secret, $this->receivedPubPoint)->getX();
+    }
+
 
     public function getPublicPoint() {
         if (extension_loaded('gmp') && USE_EXT == 'GMP') {
