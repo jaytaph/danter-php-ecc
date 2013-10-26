@@ -120,8 +120,23 @@ class PublicKey implements Interfaces\PublicKey {
     }
 
     public function getPublicKey() {
-        print_r($this);
         return $this;
+    }
+
+    public function encode() {
+        $x = gmp_strval(gmp_init($this->getPoint()->getX(), 10), 16);
+        $y = gmp_strval(gmp_init($this->getPoint()->getY(), 10), 16);
+        return "04" . str_pad($x, 64, '0', STR_PAD_LEFT) . str_pad($y, 64, '0', STR_PAD_LEFT);      // assuming curve256. Differs on other curves
+    }
+
+    static function decode(Point $g, $data) {
+        if (substr($data, 0, 2) != "04") {
+            throw new ErrorException("Must be a encoded uncompressed ECC public key");
+        }
+
+        $x = gmp_strval(gmp_init(substr($data, 2, 64), 16), 10);
+        $y = gmp_strval(gmp_init(substr($data, 2+64, 64), 16), 10);
+        return new PublicKey($g, new Point($g->getCurve(), $x, $y));
     }
 
 }
